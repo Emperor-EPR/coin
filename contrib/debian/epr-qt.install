@@ -1,0 +1,6 @@
+usr/local/bin/epr-qt usr/bin
+share/pixmaps/epr32.xpm usr/share/pixmaps
+share/pixmaps/epr16.xpm usr/share/pixmaps
+share/pixmaps/epr128.png usr/share/pixmaps
+debian/epr-qt.desktop usr/share/applications
+debian/epr-qt.protocol usr/share/kde4/services/

@@ -1,0 +1,25 @@
+# It is not recommended to modify this file in-place, because it will
+# be overwritten during package upgrades. If you want to add further
+# options or overwrite existing ones then use
+# $ systemctl edit eprd.service
+# See "man systemd.service" for details.
+
+# Note that almost all daemon options could be specified in
+# /etc/epr/epr.conf
+
+[Unit]
+Description=Bitcoin daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/eprd -daemon -conf=/etc/epr/epr.conf -pid=/run/eprd/eprd.pid
+# Creates /run/eprd owned by epr
+RuntimeDirectory=eprd
+User=epr
+Type=forking
+PIDFile=/run/eprd/eprd.pid
+Restart=on-failure
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

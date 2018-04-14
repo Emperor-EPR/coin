@@ -1,0 +1,11 @@
+[Protocol]
+exec=epr-qt '%u'
+protocol=epr
+input=none
+output=none
+helper=true
+listing=
+reading=false
+writing=false
+makedir=false
+deleting=false

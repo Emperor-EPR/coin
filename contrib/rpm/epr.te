@@ -1,0 +1,81 @@
+policy_module(epr, 1.100.1)
+
+########################################
+#
+# Declarations
+#
+
+type epr_t;
+type epr_exec_t;
+init_daemon_domain(epr_t, epr_exec_t)
+
+permissive epr_t;
+
+type epr_initrc_exec_t;
+init_script_file(epr_initrc_exec_t)
+
+type epr_conf_t;
+files_type(epr_conf_t)
+
+type epr_var_lib_t;
+files_type(epr_var_lib_t)
+
+type epr_var_run_t;
+files_type(epr_var_run_t)
+
+type epr_port_t;
+corenet_port(epr_port_t)
+
+########################################
+#
+# epr local policy
+#
+allow epr_t self:process { fork };
+
+allow epr_t self:fifo_file rw_fifo_file_perms;
+allow epr_t self:unix_stream_socket create_stream_socket_perms;
+
+manage_dirs_pattern(epr_t, epr_conf_t, epr_conf_t)
+manage_files_pattern(epr_t, epr_conf_t, epr_conf_t)
+
+manage_dirs_pattern(epr_t, epr_var_lib_t, epr_var_lib_t)
+manage_files_pattern(epr_t, epr_var_lib_t, epr_var_lib_t)
+files_var_lib_filetrans(epr_t, epr_var_lib_t, { dir file })
+
+manage_dirs_pattern(epr_t, epr_var_run_t, epr_var_run_t)
+manage_files_pattern(epr_t, epr_var_run_t, epr_var_run_t)
+
+sysnet_dns_name_resolve(epr_t)
+corenet_all_recvfrom_unlabeled(epr_t)
+
+allow epr_t self:tcp_socket create_stream_socket_perms;
+corenet_tcp_sendrecv_generic_if(epr_t)
+corenet_tcp_sendrecv_generic_node(epr_t)
+corenet_tcp_sendrecv_all_ports(epr_t)
+corenet_tcp_bind_generic_node(epr_t)
+
+gen_require(`
+    type epr_port_t;
+')
+allow epr_t epr_port_t:tcp_socket name_bind;
+
+gen_require(`
+    type epr_port_t;
+')
+allow epr_t epr_port_t:tcp_socket name_connect;
+
+domain_use_interactive_fds(epr_t)
+
+files_read_etc_files(epr_t)
+
+miscfiles_read_localization(epr_t)
+
+sysnet_dns_name_resolve(epr_t)
+
+allow epr_t epr_exec_t:file execute_no_trans;
+allow epr_t self:process setsched;
+corecmd_exec_ls(epr_t)
+corenet_tcp_connect_http_port(epr_t)
+dev_read_urand(epr_t)
+fs_getattr_xattr_fs(epr_t)
+kernel_read_system_state(epr_t)
