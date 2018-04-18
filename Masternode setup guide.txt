@@ -1,0 +1,44 @@
+Configure your wallet to be a masternode
+
+There are two steps: you will need a configuration file telling the wallet it is a masternode, and starting the wallet in masternode mode.
+
+a) Generating a configuration file
+
+In the wallet, click Tools -> Debug console. This will open a command prompt allowing you to interact with the wallet.
+
+Now we will generate the configuration file. There are different ways to do this, this guide will only describe one. In the end a dash.conf file containing the correct parameters must be in the root of the folder that contains your DASH data.
+
+In your wallet, go to Tools -> Open Configuration File. Windows will ask you what program you wish to use to open this file, choose More apps -> Notepad, and keep the checkbox at “Always use this program to open .conf files”.
+
+Copy and paste the following contents to the Notepad window that opened, replacing the text in capital letters and using the masternode key we just generated.
+
+-----------------------
+rpcuser=RANDOMLETTERSANDNUMBERS
+rpcpassword=MORERANDOMLETTERSANDNUMBERS
+rpcallowip=127.0.0.1
+listen=1
+server=1
+daemon=1
+logtimestamps=1
+maxconnections=256
+masternode=1
+masternodeprivkey=THEMASTERNODEKEYYOUGENERATED
+------------------------
+
+Press control-S to save this file, then close Notepad. Please note that if you use “File -> Save as” instead of control-S, you might save the file as dash.conf.txt instead of dash.conf. This will lead to an error in the console later when you try to start the masternode, stating that masternode=1 should be in the dash.conf file.
+
+b) Start the masternode
+
+Close the wallet.
+
+Restart the wallet, allowing it to pick up the dash.conf file (the wallet will not behave differently yet, but this is a necessary step).
+
+Check that the transaction with exactly 1000 DASH has finished confirming. This transaction will have to be confirmed at least 15 times. You can check the progress of the confirmations in your wallet by using the tab Transactions and then double-clicking the transaction in question.
+
+Open the console via Tools -> Debug console. Type in the command: “masternode start YOURWALLETPASSWORD”, using the password you set earlier to encrypt your wallet. If all is well, you will get the message: “Successfully started masternode”. Please note that you will have to do this after each restart of the wallet, so e.g. after a reboot for a Windows update or after an update of the wallet. For security reasons, use Control-L to clear the Debug console, as your password is otherwise visible in plain text. If you do not do this, re-opening the Debug console still shows the last commands entered, including your password.
+
+You can check the status of your masternode by entering "masternode status" in the Debug Console.
+
+Your wallet needs to be accessible through port 2333, so you might need to forward those in your router to the local IP-address your server has.
+
+You can check this video on how to open port 2333 https://www.youtube.com/watch?v=OWWGJrLKea8
